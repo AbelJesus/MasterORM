@@ -2,6 +2,7 @@ package br.sha.ormmaster;
 
 import android.content.Context;
 
+import MasterORM.MasterField;
 import MasterORM.MasterRecord;
 
 /**

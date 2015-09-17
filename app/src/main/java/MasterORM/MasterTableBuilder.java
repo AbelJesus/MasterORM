@@ -2,6 +2,7 @@ package MasterORM;
 
 import android.util.Log;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 /**

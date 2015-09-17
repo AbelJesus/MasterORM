@@ -16,6 +16,8 @@ public abstract class MasterConnector extends SQLiteOpenHelper{
    private MasterWrapper wrapper;
    protected static SQLiteDatabase DB;
 
+   //criar constructor em branco todo
+
    public MasterConnector(Context cont, MasterWrapper wrapper){
       super(cont, wrapper.getDBName(), null, wrapper.getDBVersion());
       this.cont = cont;

@@ -2,20 +2,16 @@ package MasterORM;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import java.lang.reflect.Field;
-import java.nio.DoubleBuffer;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by saulo on 13/06/15.
  */
-public class MasterRecord extends MasterConnector{
+public class MasterRecord<T> extends MasterConnector{
 
    //private Field[] camposTabela;
    private String tableName;
@@ -24,6 +20,10 @@ public class MasterRecord extends MasterConnector{
    public MasterRecord(Context cont){
       super(cont, MasterHelper.getMasterWrapper(cont));
       this.cont = cont;
+   }
+
+   public MasterRecord(){
+
    }
 
    @Override
@@ -62,44 +62,49 @@ public class MasterRecord extends MasterConnector{
       }
    }
 
-   public <T extends MasterRecord> List<T> listAll(Class<T> klazz){
+   public <E extends MasterRecord> List<E> listAll(Class<E> classe){
       //cria lista
-      ArrayList<T> lista = new ArrayList<>();
+      //E elemento = classe.newInstance();
+      ArrayList<E> lista = new ArrayList<E>();
       //busca dados no sqlite
       Cursor cur = DB.rawQuery(MasterTableBuilder.getSelectStatement(this.getClass().getDeclaredFields(), getTableName()), null);
       if(cur.getCount() > 0 ){
          int count = 0;
+         E rowItem;
          while(cur.moveToNext()){
             try{
-               //dá erro aqui, diz que não existe esse método
-               lista.add(klazz.getConstructor().newInstance());
-               //pega campos da nova instancia
-               Field[] F = lista.get(count).getClass().getDeclaredFields();
+
+               rowItem = classe.newInstance();
+               Field[] campos = rowItem.getClass().getDeclaredFields();
                for(int i = 0; i < cur.getColumnCount(); i++){
                   //get value from cursor
-                  String value = "";
-                  value = cur.getString(i);
-
+                  String value = cur.getString(i);
+                  //seta valor ao campo
+                  campos[i].set(rowItem, value);
+/*
                   //caso seja string
-                  if(F[i].equals(String.class)){
-                     F[i].set(lista.get(count), value);
+                  if(campos[i].equals(String.class)){
+                     campos[i].set(rowItem, value);
                   //caso seja int.. and so on...
-                  }else if(F[i].equals(int.class)){
+                  }else if(campos[i].equals(int.class)){
                      if(value.equals("")){
-                        F[i].setInt(lista.get(count), 0);
+                        campos[i].setInt(rowItem, 0);
                      }else{
-                        F[i].set(lista.get(count), Integer.parseInt((value)));
+                        campos[i].set(rowItem, Integer.parseInt((value)));
                      }
-                  }else if(F[i].equals(float.class)){
-                     F[i].setFloat(this, Float.parseFloat(value));
+                  }else if(campos[i].equals(float.class)){
+                     campos[i].setFloat(rowItem, Float.parseFloat(value));
                   }
+*/
                   //F[i].set(lista.get(count), );
+                  lista.add(rowItem);
                }
 
 
             }catch(Exception e){
                Log.d("MASTER", e.toString());
-            }finally{
+            }
+            finally{
             }
             count++;
          }
