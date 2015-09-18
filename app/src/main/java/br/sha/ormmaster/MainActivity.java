@@ -3,6 +3,7 @@ package br.sha.ormmaster;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,7 @@ import MasterORM.MasterHelper;
 import MasterORM.MasterWrapper;
 
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends AppCompatActivity{
 
    EditText memo;
 
@@ -50,6 +51,7 @@ public class MainActivity extends ActionBarActivity{
       //verificar generic
       Clientes cli = new Clientes(this);
       List<Clientes> lista = cli.listAll(Clientes.class);
+
       memo.setText("");
       //TODO estudar mais sobre generics, ver como retornar os valores corretos dentro do array
       for(int i = 0; i < lista.size(); i++){

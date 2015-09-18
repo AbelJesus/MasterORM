@@ -12,16 +12,44 @@ import android.util.Log;
 public abstract class MasterConnector extends SQLiteOpenHelper{
 
    private Context cont;
+/*
    private SQLiteDatabase MasterDB;
    private MasterWrapper wrapper;
-   protected static SQLiteDatabase DB;
 
+   protected static SQLiteDatabase DB;
+*/
+   private static MasterConnector db;
+   //criar constructor em branco todo
+
+   public static synchronized MasterConnector getInstance(Context cont){
+      if(db == null){
+         db = new MasterConnector(cont.getApplicationContext()){
+            @Override
+            protected String getCreateSintax(){
+               return null;
+            }
+
+            @Override
+            public String getTableName(){
+               return null;
+            }
+         };
+      }
+      return db;
+   }
+
+
+
+   protected MasterConnector(Context cont){
+      super(cont, MasterHelper.getMasterWrapper(cont).getDBName(), null, MasterHelper.getMasterWrapper(cont).getDBVersion());
+   }
+/*
    public MasterConnector(Context cont, MasterWrapper wrapper){
       super(cont, wrapper.getDBName(), null, wrapper.getDBVersion());
       this.cont = cont;
       Log.d("MASTER", "Constructor");
-      DB = getWritableDatabase();
-   }
+      db = getWritableDatabase();
+   }*/
 
    @Override
    public void onCreate(SQLiteDatabase db){
