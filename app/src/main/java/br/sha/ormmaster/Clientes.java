@@ -11,6 +11,7 @@ public class Clientes extends MasterContainer{
 
    public String Nome, Endereco;
    public int cidade, estado;
+   public Double ValorReceber;
 
    public Clientes(){
    }

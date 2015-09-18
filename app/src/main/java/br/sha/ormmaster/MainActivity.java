@@ -35,32 +35,26 @@ public class MainActivity extends AppCompatActivity{
       cli.cidade = 1;
       cli.estado = 1;
       cli.Endereco = "soapsoapsaspao";
-      cli.Nome = "asasasas";
+      //cli.Nome = "asasasas";
+      //cli.ValorReceber = 2.0;
       cli.save();
    }
 
    public void testar(View v ){
-/*
-      Clientes cli = new Clientes(this);
-      cli.cidade = 1;
-      cli.estado = 1;
-      cli.Endereco = "soapsoapsaspao";
-      cli.Nome = "asasasas";
-      cli.save();
-*/
-      //verificar generic
       Clientes cli = new Clientes(this);
       List<Clientes> lista = cli.listAll(Clientes.class);
 
       memo.setText("");
-      //TODO estudar mais sobre generics, ver como retornar os valores corretos dentro do array
+      StringBuilder dados = new StringBuilder();
       for(int i = 0; i < lista.size(); i++){
-         String nome = lista.get(i).Nome;
-         memo.append(lista.get(i).Nome + "\n");
-         memo.append(lista.get(i).Endereco + "\n");
-         memo.append(String.valueOf(lista.get(i).cidade) + "\n");
-         memo.append(String.valueOf(lista.get(i).estado) + "\n\n");
+         dados.append(String.valueOf(i));
+         dados.append(lista.get(i).Nome + "\n");
+         dados.append(lista.get(i).Endereco + "\n");
+         dados.append(String.valueOf(lista.get(i).cidade) + "\n");
+         dados.append(String.valueOf(lista.get(i).estado) + "\n");
+         dados.append(String.valueOf(lista.get(i).ValorReceber.toString()) + "\n\n");
       }
+      memo.setText(dados.toString());
    }
 
 }

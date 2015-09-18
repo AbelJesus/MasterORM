@@ -9,8 +9,10 @@ import android.util.Log;
 /**
  * Created by saulo on 13/06/15.
  */
-public abstract class MasterConnector extends SQLiteOpenHelper{
+public class MasterConnector extends SQLiteOpenHelper{
 
+   private final String tableName;
+   private final String createSintax;
    private Context cont;
 /*
    private SQLiteDatabase MasterDB;
@@ -18,56 +20,35 @@ public abstract class MasterConnector extends SQLiteOpenHelper{
 
    protected static SQLiteDatabase DB;
 */
+
+   private String CreateSintax, TableName;
    private static MasterConnector db;
-   //criar constructor em branco todo
-
-   public static synchronized MasterConnector getInstance(Context cont){
+   //todo VERIFICAR CREATE, não está entrando no OnCreate
+   public static synchronized MasterConnector getInstance(Context cont,String TableName, String CreateSintax){
       if(db == null){
-         db = new MasterConnector(cont.getApplicationContext()){
-            @Override
-            protected String getCreateSintax(){
-               return null;
-            }
-
-            @Override
-            public String getTableName(){
-               return null;
-            }
-         };
+         db = new MasterConnector(cont.getApplicationContext(), TableName, CreateSintax);
       }
       return db;
    }
 
 
 
-   protected MasterConnector(Context cont){
+   protected MasterConnector(Context cont, String TableName, String CreateSintax){
       super(cont, MasterHelper.getMasterWrapper(cont).getDBName(), null, MasterHelper.getMasterWrapper(cont).getDBVersion());
+      tableName = TableName;
+      createSintax = CreateSintax;
    }
-/*
-   public MasterConnector(Context cont, MasterWrapper wrapper){
-      super(cont, wrapper.getDBName(), null, wrapper.getDBVersion());
-      this.cont = cont;
-      Log.d("MASTER", "Constructor");
-      db = getWritableDatabase();
-   }*/
 
    @Override
    public void onCreate(SQLiteDatabase db){
-      try{
-         db.execSQL(getCreateSintax());
-         Log.d("MASTER", "create");
-      }catch(SQLException e){
-         Log.d("MASTER", e.toString());
-      }
+      db.execSQL(createSintax);
    }
 
    @Override
    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-      db.execSQL("DROP TABLE if exists ".concat(getTableName()));
+      //TODO criar método para exportação de dados
+      db.execSQL("DROP TABLE if exists ".concat(tableName));
       Log.d("MASTER", "Tabela removida");
    }
 
-   protected abstract String getCreateSintax();
-
-   public abstract String getTableName();
 }
