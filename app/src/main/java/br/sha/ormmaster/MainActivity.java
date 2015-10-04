@@ -1,20 +1,14 @@
 package br.sha.ormmaster;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import MasterORM.MasterConnector;
-import MasterORM.MasterHelper;
-import MasterORM.MasterWrapper;
+import MasterORM.MasterQueryBuilder;
 
 
 public class MainActivity extends ActionBarActivity{
@@ -36,6 +30,7 @@ public class MainActivity extends ActionBarActivity{
       cli.Endereco = "soapsoapsaspao";
       cli.Nome = "asasasas";
       cli.save();
+
    }
 
    public void testar(View v ){
@@ -58,6 +53,9 @@ public class MainActivity extends ActionBarActivity{
          memo.append(lista.get(i).Endereco + "\n");
          memo.append(String.valueOf(lista.get(i).cidade) + "\n");
          memo.append(String.valueOf(lista.get(i).estado) + "\n\n");
+
+          MasterQueryBuilder s = new MasterQueryBuilder();
+
       }
    }
 
